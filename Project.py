@@ -29,7 +29,7 @@ st.set_page_config(layout="wide")
 
 @st.cache(allow_output_mutation=True)
 def get_data():
-    df = pd.read_csv("C:\\Users\\divyarajp\\Downloads\\diamonds.csv")
+    df = pd.read_csv("diamonds.csv")
     df = df.drop(['Unnamed: 0'], axis=1)
     return df
 
