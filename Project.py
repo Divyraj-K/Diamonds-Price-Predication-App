@@ -92,10 +92,10 @@ if EDA:
             df1 = df1.drop('ss', axis=1, inplace=False)
             df1 = df1.reset_index(drop=True)
             Data['PPC'] = Data['price']/Data['carat']
-            fig = px.bar(df1, x=select_column, y="counts", title="Count Plot", width=400, height=400)
+            fig = px.bar(df1, x=select_column, y="counts", title="Count Plot", color=select_column, width=400, height=400)
             fig1 = px.pie(df1, values='counts', names=select_column, title='Pie Chart', width=400,
                       height=400)
-            fig0 = px.box(Data, y="price", x=select_column, width=800, height=600)
+            fig0 = px.box(Data, y="price", x=select_column, width=800, height=600, color=select_column)
         else:
             x = select_column
             fig = px.box(Data, y=x, title="Box Plot", width=400, height=400)
