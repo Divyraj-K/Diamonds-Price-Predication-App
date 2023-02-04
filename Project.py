@@ -112,16 +112,17 @@ if EDA:
         # sns.violinplot(data=Data, x="color", y="price", split=True)
         # st.pyplot(fig)
 
+Data1 = Data
 ##Model
 Method = st.sidebar.selectbox("Select Method",("Regression","Classification","NLP"))
 le = LabelEncoder()
 
-Data['cut'] = le.fit_transform(Data['cut'])
-Data['color'] = le.fit_transform(Data['color'])
-Data['clarity'] = le.fit_transform(Data['clarity'])
+Data1['cut'] = le.fit_transform(Data1['cut'])
+Data1['color'] = le.fit_transform(Data1['color'])
+Data1['clarity'] = le.fit_transform(Data1['clarity'])
 
-X=Data.drop('price',axis=1)
-y=Data['price']
+X=Data1.drop('price',axis=1)
+y=Data1['price']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 Re = st.sidebar.selectbox("Select",("LinearSVR","KNeighborsRegressor","LinearRegression","RandomForestRegressor",
