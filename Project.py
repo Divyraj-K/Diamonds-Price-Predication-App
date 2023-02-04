@@ -27,7 +27,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolu
 st.set_page_config(layout="wide")
 
 
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def get_data():
     df = pd.read_csv("diamonds.csv")
     df = df.drop(['Unnamed: 0'], axis=1)
