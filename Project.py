@@ -113,8 +113,7 @@ if EDA:
         # st.pyplot(fig)
 
 Data1 = Data
-##Model
-Method = st.sidebar.selectbox("Select Method",("Regression","Classification","NLP"))
+
 le = LabelEncoder()
 
 Data1['cut'] = le.fit_transform(Data1['cut'])
@@ -207,6 +206,6 @@ if pr:
 
     #model = RandomForestRegressor(random_state=42).fit(X_train, y_train)
     y_pred = model.predict(pred)
-    y_pred = y_pred[0]
+    y_pred = round(y_pred[0],1)
     st.markdown(f"<h4 style='text-align: center;'>Price : ${y_pred}</h4>", unsafe_allow_html=True)
 
