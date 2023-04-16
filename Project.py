@@ -175,7 +175,7 @@ a = mean_absolute_error(y_test, y_pred)
 b = mean_absolute_percentage_error(y_test, y_pred)
 c = mean_squared_error(y_test, y_pred, squared = True)
 d = mean_squared_error(y_test, y_pred, squared = False)
-e = r2_score(y_test, y_pred)
+e = r2_score(y_test, y_pred)*100
 Table = {
   "Results": ["MAE", "MAPE", "MSE", "RMSE", "R2"],
   "Score": [a, b, c, d, e]
@@ -184,3 +184,29 @@ table = pd.DataFrame(Table)
 if result:
     st.title(Re)
     st.table(table)
+
+#Predication
+pr = st.sidebar.checkbox("Predication")
+if pr:
+    col1, col2 = st.columns([1,1])
+    c1 = col1.selectbox("Color",('D','E','F','G','H','I','J'))
+    cl1 = col2.selectbox("Clarity",('IF','VVS1','VVS2','VS1','VS2','SI1','SI2','I1'))
+    cu1 = col1.selectbox("Cut",('Ideal','Premium','Very Good','Good','Fair'))
+    ca1 = col2.number_input("Carat")
+    dp1 = col1.number_input("Depth")
+    tb1 = col2.number_input("Table")
+    x1 = col1.number_input("x")
+    y1 = col2.number_input("y")
+    z1 = col1.number_input("z")
+
+    st.button("Predict")
+
+    pred = X_test
+    pred = pred.iloc[0:0]
+    pred = pred.append({'carat': ca1, 'cut': 2, 'color': 0, 'clarity': 4, 'depth': dp1, 'table': tb1, 'x': x1, 'y': y1, 'z': z1}, ignore_index=True)
+
+    #model = RandomForestRegressor(random_state=42).fit(X_train, y_train)
+    y_pred = model.predict(pred)
+    y_pred = y_pred[0]
+    st.markdown(f"<h4 style='text-align: center;'>Price : ${y_pred}</h4>", unsafe_allow_html=True)
+
