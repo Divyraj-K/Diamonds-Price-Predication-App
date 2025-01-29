@@ -49,12 +49,14 @@ elif hour < 17:
 else:
     greeting = "Good evening"
 st.write("{}!".format(greeting))
-
-st.markdown("<h4 style='text-align: center;'>========================================================================================</h4>", unsafe_allow_html=True)
+st.markdown("---")
+#st.markdown("<h4 style='text-align: center;'>========================================================================================</h4>", unsafe_allow_html=True)
 
 clarity_oder = ['IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1', 'Ideal', 'Premium', 'Very Good', 'Good', 'Fair']
 code1_s = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5]
-
+cut_mapping = dict(zip(['Ideal', 'Premium', 'Very Good', 'Good', 'Fair'], [2, 1, 3, 4, 5]))
+color_mapping = dict(zip(['D', 'E', 'F', 'G', 'H', 'I', 'J'], range(7)))
+clarity_mapping = dict(zip(['IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1'], range(8)))
 
 ##Part -1 EDA
 st.sidebar.write('EDA Report')
@@ -72,7 +74,9 @@ if EDA:
     if Describe:
         st.markdown("<h3 style='text-align: center;'>Descriptive Statistics</h3>", unsafe_allow_html=True)
         st.table(Data.describe())
-        df = Data.corr()
+        numerical_data = Data.select_dtypes(include=['number'])
+        df = numerical_data.corr()
+        #df = Data.corr()
         df = round(df,2)
         fig = px.imshow(df, width=800, height=800, text_auto=True, color_continuous_scale='RdBu_r')
         st.markdown("<h3 style='text-align: center;'>Correlation</h3>", unsafe_allow_html=True)
@@ -113,12 +117,16 @@ if EDA:
         # st.pyplot(fig)
 
 Data1 = Data
+Data1['cut'] = Data1['cut'].map(cut_mapping)
+Data1['color'] = Data1['color'].map(color_mapping)
+Data1['clarity'] = Data1['clarity'].map(clarity_mapping)
 
-le = LabelEncoder()
 
-Data1['cut'] = le.fit_transform(Data1['cut'])
-Data1['color'] = le.fit_transform(Data1['color'])
-Data1['clarity'] = le.fit_transform(Data1['clarity'])
+#le = LabelEncoder()
+
+#Data1['cut'] = le.fit_transform(Data1['cut'])
+#Data1['color'] = le.fit_transform(Data1['color'])
+#Data1['clarity'] = le.fit_transform(Data1['clarity'])
 
 X=Data1.drop('price',axis=1)
 y=Data1['price']
@@ -172,9 +180,9 @@ elif Re == "DecisionTreeRegressor":
 result = st.sidebar.checkbox("Show Result Score")
 a = mean_absolute_error(y_test, y_pred)
 b = mean_absolute_percentage_error(y_test, y_pred)
-c = mean_squared_error(y_test, y_pred, squared = True)
-d = mean_squared_error(y_test, y_pred, squared = False)
-e = r2_score(y_test, y_pred)*100
+c = mean_squared_error(y_test, y_pred)  # Default is squared=True
+d = mean_squared_error(y_test, y_pred)**0.5  # Calculate RMSE manually
+e = r2_score(y_test, y_pred) * 100
 Table = {
   "Results": ["MAE", "MAPE", "MSE", "RMSE", "R2"],
   "Score": [a, b, c, d, e]
@@ -197,15 +205,21 @@ if pr:
     x1 = col1.number_input("x")
     y1 = col2.number_input("y")
     z1 = col1.number_input("z")
+    cut_encoded = cut_mapping[cu1]
+    color_encoded = color_mapping[c1]
+    clarity_encoded = clarity_mapping[cl1]
 
     st.button("Predict")
 
-    pred = X_test
-    pred = pred.iloc[0:0]
-    pred = pred.append({'carat': ca1, 'cut': 2, 'color': 0, 'clarity': 4, 'depth': dp1, 'table': tb1, 'x': x1, 'y': y1, 'z': z1}, ignore_index=True)
+
+    new_data = pd.DataFrame([{
+        'carat': ca1, 'cut': cut_encoded, 'color': color_encoded,
+        'clarity': clarity_encoded, 'depth': dp1, 'table': tb1, 'x': x1, 'y': y1, 'z': z1
+    }])
+
+    pred = pd.concat([X_test.iloc[:0], new_data], ignore_index=True)
 
     #model = RandomForestRegressor(random_state=42).fit(X_train, y_train)
     y_pred = model.predict(pred)
     y_pred = round(y_pred[0],1)
     st.markdown(f"<h4 style='text-align: center;'>Price : ${y_pred}</h4>", unsafe_allow_html=True)
-
