@@ -32,7 +32,6 @@ def get_data():
     df = pd.read_csv("diamonds.csv")
     df = df.drop(['Unnamed: 0'], axis=1)
     return df
-
 Data = get_data()
 
 ## Title
