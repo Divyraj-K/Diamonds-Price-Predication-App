@@ -1,7 +1,8 @@
-streamlit 
+streamlit
 pandas
 numpy
 sklearn
 seaborn
 matplotlib
+mlxtend
 plotly
