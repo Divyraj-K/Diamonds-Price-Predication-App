@@ -4,5 +4,4 @@ numpy
 sklearn
 seaborn
 matplotlib
-mlxtend
 plotly
