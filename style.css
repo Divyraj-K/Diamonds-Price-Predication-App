@@ -1,0 +1,35 @@
+.main-title {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    color: #D4AF37;
+    padding: 10px;
+}
+
+.greeting {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.prediction-box {
+    background-color: #111;
+    color: #00FFAA;
+    padding: 20px;
+    font-size: 28px;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.stButton>button {
+    background-color: #D4AF37;
+    color: white;
+    border-radius: 8px;
+    height: 3em;
+    width: 100%;
+}
+
+.stButton>button:hover {
+    background-color: #b8932e;
+}
